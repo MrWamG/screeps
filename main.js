@@ -8,11 +8,11 @@ module.exports.loop = function () {
         Game.spawns['MrWamG'].spawnCreep([WORK,CARRY,MOVE], newName, 
             {memory: {role: 'harvester'}});
     }
-    for(let i = 0;i<harvesters.length && i < 5;i++) {
+    for(let i = 0;i<harvesters.length && i < 2;i++) {
         let creep = harvesters[i];
         roleHarvester.run(creep);
     }
-    for(let i = 5;i<harvesters.length;i++) {
+    for(let i = 2;i<harvesters.length;i++) {
         let creep = harvesters[i];
         roleUpgrader.run(creep);
     }
