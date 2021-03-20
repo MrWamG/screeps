@@ -32,7 +32,7 @@ var roleBuilder = {
 
         if (creep.memory.building) {
 
-            /* 获取当前爬虫房间内的待建设的建筑数组。（没有编程基础的同学可以理解为一个有序的列表）*/
+            /* 获取当前爬虫房间内的待建设的建筑数组*/
 
             var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
 

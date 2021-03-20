@@ -13,26 +13,34 @@ var roleExtension = require('role.extension'); // 运输能量至虫巢或扩容
 
 
 module.exports.loop = function () {
-  var harvesters = _.filter(Game.creeps, function (creep) {
+  var creepArr = _.filter(Game.creeps, function (creep) {
     return creep;
   });
 
-  if (harvesters.length < 20) {
+  for (var name in Game.rooms) {
+    console.log("房间 " + name + "有" + Game.rooms[name].energyAvailable + "能量");
+  }
+
+  if (creepArr.length < 15) {
     var newName = 'Harvester' + Game.time;
-    Game.spawns['MrWamG'].spawnCreep([WORK, CARRY, MOVE], newName, {
+    Game.spawns['MrWamG'].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], newName, {
       memory: {
         role: 'harvester'
       }
     });
   }
 
-  for (var i = 0; i < harvesters.length && i < 5; i++) {
-    var creep = harvesters[i];
+  for (var i = 0; i < creepArr.length && i < 5; i++) {
+    var creep = creepArr[i];
     roleExtension.run(creep);
-  }
+  } // for (let i = 5; i < creepArr.length; i++) {
+  //     let creep = creepArr[i];
+  //     roleBuilder.run(creep);
+  // }
 
-  for (var _i = 5; _i < harvesters.length; _i++) {
-    var _creep = harvesters[_i];
+
+  for (var _i = 5; _i < creepArr.length; _i++) {
+    var _creep = creepArr[_i];
     roleUpgrader.run(_creep);
   }
 };
