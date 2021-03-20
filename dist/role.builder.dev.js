@@ -2,6 +2,8 @@
 
 var roleBuilder = {
   run: function run(creep) {
+    var sourceIndex = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
     /* 如果爬虫处于建筑状态且负载的能量为0的时候*/
 
     /* && 且 左右两边都为真时即为真，一假即假*/
@@ -31,10 +33,12 @@ var roleBuilder = {
       /* 如果有等待的需要建造的建筑（无法理解可以改为if（targets.length > 0）*/
 
       if (targets.length) {
-        /* 建造建筑列表里的第一个，如果不在范围内*/
-        if (creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
+        // 找到更近的虫巢或扩容器
+        var closerTarget = creep.pos.findClosestByRange(targets);
+
+        if (creep.build(closerTarget) == ERR_NOT_IN_RANGE) {
           /* 向该建筑移动，并用颜色#ffffff标记路线*/
-          creep.moveTo(targets[0], {
+          creep.moveTo(closerTarget, {
             visualizePathStyle: {
               stroke: '#ffffff'
             }
@@ -46,8 +50,8 @@ var roleBuilder = {
     else {
         var sources = creep.room.find(FIND_SOURCES);
 
-        if (creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-          creep.moveTo(sources[0], {
+        if (creep.harvest(sources[sourceIndex]) == ERR_NOT_IN_RANGE) {
+          creep.moveTo(sources[sourceIndex], {
             visualizePathStyle: {
               stroke: '#ffaa00'
             }

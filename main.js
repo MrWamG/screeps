@@ -1,32 +1,37 @@
-var roleHarvester = require('harvester'); // 采集资源至虫巢
-let roleUpgrader = require('role.upgrader'); // 升级控制器
-let roleBuilder = require('role.builder'); // 建筑
-let roleExtension = require('role.extension'); // 运输能量至虫巢或扩容器
+const roleHarvester = require('harvester'); // 采集资源至虫巢
+const roleUpgrader = require('role.upgrader'); // 升级控制器
+const roleBuilder = require('role.builder'); // 建筑
+const roleExtension = require('role.extension'); // 运输能量至虫巢或扩容器
 module.exports.loop = function () {
-    var creepArr = _.filter(Game.creeps, (creep) => creep);
+    let creepArr = _.filter(Game.creeps, (creep) => creep);
     
-    for (var name in Game.rooms) {
-        console.log("房间 " +name+"有"+Game.rooms[name].energyAvailable+"能量");
+    // for (let name in Game.rooms) {
+    //     console.log("房间 " +name+"有"+Game.rooms[name].energyAvailable+"能量");
+    // }
+
+    for(let name in Memory.creeps){
+        if(!Game.creeps[name]){
+            delete Memory.creeps[name];
+        }
     }
 
-    if (creepArr.length < 15) {
-        var newName = 'Harvester' + Game.time;
-        Game.spawns['MrWamG'].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], newName, {
+    if (creepArr.length < 20) {
+        let newName = 'Harvester' + Game.time;
+        Game.spawns['MrWamG'].spawnCreep([ WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], newName, {
             memory: {
                 role: 'harvester'
             }
         });
     }
-    for (let i = 0; i < creepArr.length && i < 5; i++) {
+    for (let i = 0; i < creepArr.length; i++) {
         let creep = creepArr[i];
-        roleExtension.run(creep);
+        if(i<6){
+            roleExtension.run(creep);
+        }else if(i<10){
+            roleExtension.run(creep,1);
+        }else{
+            roleUpgrader.run(creep);
+        }
     }
-    // for (let i = 5; i < creepArr.length; i++) {
-    //     let creep = creepArr[i];
-    //     roleBuilder.run(creep);
-    // }
-    for(let i = 5;i<creepArr.length;i++) {
-        let creep = creepArr[i];
-        roleUpgrader.run(creep);
-    }
+    // console.log('creeps num: ' + creepArr.length);
 }
