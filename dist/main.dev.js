@@ -26,9 +26,9 @@ module.exports.loop = function () {
     }
   }
 
-  if (creepArr.length < 20) {
+  if (creepArr.length < 15) {
     var newName = 'Harvester' + Game.time;
-    Game.spawns['MrWamG'].spawnCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], newName, {
+    Game.spawns['MrWamG'].spawnCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], newName, {
       memory: {
         role: 'harvester'
       }
@@ -38,13 +38,16 @@ module.exports.loop = function () {
   for (var i = 0; i < creepArr.length; i++) {
     var creep = creepArr[i];
 
-    if (i < 6) {
+    if (i < 3) {
+      roleExtension.run(creep, 1);
+    } else if (i < 7) {
       roleExtension.run(creep);
-    } else if (i < 10) {
+    } else if (i < 12) {
       roleExtension.run(creep, 1);
     } else {
       roleUpgrader.run(creep);
     }
-  } // console.log('creeps num: ' + creepArr.length);
+  }
 
+  console.log('creeps num: ' + creepArr.length);
 };

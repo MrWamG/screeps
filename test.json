@@ -1,0 +1,10 @@
+{
+    "E32S37": {
+        "name": "E32S37",
+        "energyAvailable": 450,
+        "energyCapacityAvailable": 800,
+        "visual": {
+            "roomName": "E32S37"
+        }
+    }
+}
