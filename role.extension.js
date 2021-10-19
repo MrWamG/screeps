@@ -3,7 +3,7 @@ module.exports = {
     run: function (creep,sourceIndex = 0) {
 
         if (creep.carry.energy < creep.carryCapacity) {
-
+            creep.say('harvest');
             var sources = creep.room.find(FIND_SOURCES);
 
             if (creep.harvest(sources[sourceIndex]) == ERR_NOT_IN_RANGE) {
@@ -17,7 +17,7 @@ module.exports = {
             }
 
         } else {
-
+            creep.say('transfer');
             /*creep.room.find(参数1：查找的类型,参数2：对象数组)*/
             var targets = creep.room.find(FIND_STRUCTURES, {
 
@@ -34,7 +34,6 @@ module.exports = {
             });
 
             if (targets.length > 0) {
-                
                 // 找到更近的虫巢或扩容器
                 let closerTarget = creep.pos.findClosestByRange(targets);
 

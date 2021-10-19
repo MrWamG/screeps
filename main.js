@@ -16,25 +16,43 @@ module.exports.loop = function () {
             delete Memory.creeps[name];
         }
     }
-
-    methods.role_spawn('harvester',4,[
-        WORK,WORK,WORK,WORK,
-        CARRY,CARRY,
-        MOVE,MOVE,MOVE
+    
+    methods.role_spawn('harvester',3,[
+        WORK
+        ,CARRY
+        ,MOVE
     ]);
+    
+    // methods.role_spawn('builder',2,[
+    //     WORK,WORK,WORK,WORK,
+    //     CARRY,CARRY,
+    //     MOVE,MOVE,MOVE
+    // ]);
 
-    methods.role_spawn('upgrade',6,[
-        WORK,WORK,WORK,WORK,
-        CARRY,CARRY,
-        MOVE,MOVE,MOVE
+    methods.role_spawn('upgrade',5,[
+        WORK,WORK,WORK,WORK
+        ,CARRY,CARRY
+        ,MOVE,MOVE,MOVE
     ]);
 
     for (let i = 0; i < creepArr.length; i++) {
         let creep = creepArr[i];
+        // let harvester = creepArr.filter(item=>{
+        //     return item.memory.role === 'harvester'
+        // });
+        // for(let j = 0; j < harvester.length; j++) {
+        //     if(j < 2){
+        //         roleExtension.run(harvester[j]);
+        //     }else{
+        //         roleExtension.run(harvester[j],1);
+        //     }
+        // }
         if(creep.memory.role === 'harvester'){
-            roleExtension.run(creep);
+            roleExtension.run(creep,1);
         }else if(creep.memory.role === 'upgrade'){
             roleUpgrader.run(creep);
+        }else if(creep.memory.role === 'builder'){
+            roleBuilder.run(creep);
         }
     }
 
