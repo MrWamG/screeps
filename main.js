@@ -17,23 +17,38 @@ module.exports.loop = function () {
         }
     }
     
-    methods.role_spawn('harvester',3,[
-        WORK
-        ,CARRY
-        ,MOVE
-    ]);
+    methods.role_spawn({
+        role_name:'harvester',
+        spawn_name:'Spawn1',
+        num:3,
+        body:[
+            WORK
+            ,CARRY
+            ,MOVE
+        ]
+    });
     
-    // methods.role_spawn('builder',2,[
-    //     WORK,WORK,WORK,WORK,
-    //     CARRY,CARRY,
-    //     MOVE,MOVE,MOVE
-    // ]);
+    methods.role_spawn({
+        role_name:'builder',
+        spawn_name:'Spawn1',
+        num:2,
+        body:[
+            WORK,WORK,WORK,WORK,
+            CARRY,CARRY,
+            MOVE,MOVE,MOVE
+        ]
+    });
 
-    methods.role_spawn('upgrade',5,[
-        WORK,WORK,WORK,WORK
-        ,CARRY,CARRY
-        ,MOVE,MOVE,MOVE
-    ]);
+    methods.role_spawn({
+        role_name:'upgrade',
+        spawn_name:'Spawn1',
+        num:5,
+        body:[
+            WORK,WORK,WORK,WORK
+            ,CARRY,CARRY
+            ,MOVE,MOVE,MOVE
+        ]
+    });
 
     for (let i = 0; i < creepArr.length; i++) {
         let creep = creepArr[i];
