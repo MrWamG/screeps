@@ -4,8 +4,10 @@ const roleExtension = require('role.extension'); // 运输能量至虫巢或扩�
 const roleClaim = require('role.claim'); // 占领 
 const roleRoad = require('role.road'); // 道路维护
 const methods = require('methods');// 方法集合
+const structure_list = require('structure_list'); // 将所有存在过的建筑存放在room的memory中，当建筑不存在后将自动创造工地
 module.exports.loop = function () {
     roleRoad.run();
+    structure_list.run();
     let creepArr = _.filter(Game.creeps, (creep) => creep);
     // for (let name in Game.rooms) {
     //     console.log("房间 " +name+"有"+Game.rooms[name].energyAvailable+"能量");
