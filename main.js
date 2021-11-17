@@ -21,21 +21,21 @@ module.exports.loop = function () {
         role_name:'harvester',
         spawn_name:'Spawn1',
         num:3,
-        body_json:{'move':1,'carry':1,'move':1}
+        body_json:{'work':1,'carry':1,'move':1}
     });
     
     methods.role_spawn({
         role_name:'upgrade',
         spawn_name:'Spawn1',
         num:5,
-        body_json:{'move':3,'carry':1,'move':1}
+        body_json:{'work':3,'carry':1,'move':1}
     });
     
     methods.role_spawn({
         role_name:'builder',
         spawn_name:'Spawn1',
         num:2,
-        body_json:{'move':1,'carry':1,'move':1}
+        body_json:{'work':1,'carry':1,'move':1}
     });
 
     for (let i = 0; i < creepArr.length; i++) {
