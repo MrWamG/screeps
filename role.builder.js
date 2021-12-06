@@ -1,5 +1,10 @@
 let roleBuilder = {
-    run: function (creep,sourceIndex = 0) {
+    /**
+     * @param {Object} creep 指定的爬
+     * @param {Number} sourceIndex 能量矿下标
+     * @param {Object} specify 指定某个工地进行建造
+     */
+    run: function (creep,sourceIndex = 0,specify) {
         /* 如果爬虫处于建筑状态且负载的能量为0的时候*/
         /* && 且 左右两边都为真时即为真，一假即假*/
         if (creep.memory.building && creep.carry.energy == 0) {
@@ -16,7 +21,7 @@ let roleBuilder = {
         /* 如果爬虫处于建筑状态*/
         if (creep.memory.building) {
             /* 获取当前爬虫房间内的待建设的建筑数组*/
-            let buildTargets = creep.room.find(FIND_CONSTRUCTION_SITES);
+            let buildTargets = specify || creep.room.find(FIND_CONSTRUCTION_SITES);
 
             /* 获取需要维修的建筑 */
             let repairTargets = creep.room.find(FIND_STRUCTURES,{
@@ -25,15 +30,7 @@ let roleBuilder = {
                 }
             })
             /* 如果有等待的需要建造的建筑*/
-            if (repairTargets.length) {
-                if(creep.repair(road) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(road, {
-                        visualizePathStyle: {
-                            stroke: '#d2ff3c'
-                        }
-                    });
-                }
-            }else if(buildTargets.length){// 如果没有需要维修的建筑则去建造建筑
+            if (buildTargets.length) {
                 // 找到更近的虫巢或扩容器
                 let closerTarget = creep.pos.findClosestByRange(buildTargets);
                 if (creep.build(closerTarget) == ERR_NOT_IN_RANGE) {
@@ -41,6 +38,14 @@ let roleBuilder = {
                     creep.moveTo(closerTarget, {
                         visualizePathStyle: {
                             stroke: '#ffffff'
+                        }
+                    });
+                }
+            }else if(repairTargets.length){// 如果没有需要建造的工地则去维护建筑
+                if(creep.repair(repairTargets) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(repairTargets, {
+                        visualizePathStyle: {
+                            stroke: '#d2ff3c'
                         }
                     });
                 }
