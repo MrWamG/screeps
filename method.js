@@ -12,8 +12,7 @@ module.exports = {
             memory,
         });
     },
-    // 检索creeps中的身份，对每种身份进行数量要求定义每种身份所需要的身体
-    /**
+    /** 检索creeps中的身份，对每种身份进行数量要求定义每种身份所需要的身体
     * @param {Object} body_json 身体组件，传入组件的字符串而非常量
     * @param {String} role_name creep的身份名称
     * @param {String} spawn_name 使用哪个孵化器生产creep
@@ -39,5 +38,17 @@ module.exports = {
                 }
             })
         }
+    },
+    /** 获取房间内Spawn以及extension的能量总量
+     * @param {Object} room 需要查询的房间对象
+     */
+    getSpawnEnergy(room) {
+        return room.find(FIND_STRUCTURES,{
+            filter:item=>{
+                return item.structureType === STRUCTURE_SPAWN || item.structureType === STRUCTURE_EXTENSION
+            }
+        }).reduce((total,item)=>{
+            return total + Number(item.store.energy);
+        },0)
     }
 }
