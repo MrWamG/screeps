@@ -8,7 +8,15 @@ const tower = require('tower'); // 防御塔功能运行
 module.exports.loop = function () {
     structure_list.run();
     let creepArr = _.filter(Game.creeps, (creep) => creep);
-
+    
+    // 删除无用的creep内存
+    for(let name in Memory.creeps){
+        if(!Game.creeps[name]){
+            delete Memory.creeps[name];
+        }
+    }
+    
+    // 每个房间的循环
     for(let room_index in Game.rooms){
         let room = Game.rooms[room_index];
 
@@ -18,58 +26,49 @@ module.exports.loop = function () {
                 return !item.my
             }
         });
+        // 房间中用于孵化的能量总值
+        let roomEnergy = methods.getSpawnEnergy(room);
+        // 最大的工作部件，最低不得小于1，200为1 carry + 1 move + 生产creep本身需要的100能量
+        let maxWork = Math.max(1,Math.floor((roomEnergy - 200) / BODYPART_COST['work']));
+        
+        // Tower防御行为运转中
+        tower.run(room,enemys);
 
-        tower.run(room,enemys)
-    }
-
-    for(let name in Memory.creeps){
-        if(!Game.creeps[name]){
-            delete Memory.creeps[name];
+        console.log(room.name + '中可用于孵化的能量有:' + roomEnergy)
+        methods.role_spawn({
+            role_name:'harvester',
+            spawn_name:'Spawn1',
+            num:2,
+            body_json:{'work':maxWork,'carry':1,'move':1}
+        });
+        
+        methods.role_spawn({
+            role_name:'upgrade',
+            spawn_name:'Spawn1',
+            num:5,
+            body_json:{'work':maxWork,'carry':1,'move':1}
+        });
+        
+        methods.role_spawn({
+            role_name:'builder',
+            spawn_name:'Spawn1',
+            num:2,
+            body_json:{'work':1,'carry':1,'move':1}
+        });
+        
+        for (let i = 0; i < creepArr.length; i++) {
+            let creep = creepArr[i];
+            if(creep.memory.role === 'harvester'){
+                roleExtension.run(creep,1);
+            }else if(creep.memory.role === 'upgrade'){
+                roleUpgrader.run(creep);
+            }else if(creep.memory.role === 'builder'){
+                roleBuilder.run(creep,1);
+                roleExtension.run(creep,1);
+            }
         }
-    }
-    
-    methods.role_spawn({
-        role_name:'harvester',
-        spawn_name:'Spawn1',
-        num:2,
-        body_json:{'work':1,'carry':1,'move':1}
-    });
-    
-    methods.role_spawn({
-        role_name:'upgrade',
-        spawn_name:'Spawn1',
-        num:5,
-        body_json:{'work':1,'carry':1,'move':1}
-    });
-    
-    methods.role_spawn({
-        role_name:'builder',
-        spawn_name:'Spawn1',
-        num:2,
-        body_json:{'work':1,'carry':1,'move':1}
-    });
-
-    for (let i = 0; i < creepArr.length; i++) {
-        let creep = creepArr[i];
-        // let harvester = creepArr.filter(item=>{
-        //     return item.memory.role === 'harvester'
-        // });
-        // for(let j = 0; j < harvester.length; j++) {
-        //     if(j < 2){
-        //         roleExtension.run(harvester[j]);
-        //     }else{
-        //         roleExtension.run(harvester[j],1);
-        //     }
-        // }
-        if(creep.memory.role === 'harvester'){
-            roleExtension.run(creep,1);
-        }else if(creep.memory.role === 'upgrade'){
-            roleUpgrader.run(creep);
-        }else if(creep.memory.role === 'builder'){
-            roleBuilder.run(creep,1);
-            roleExtension.run(creep,1);
-        }
-    }
+        
+    }// 每个房间的循环
 
     console.log('creeps num: ' + creepArr.length);
 }
