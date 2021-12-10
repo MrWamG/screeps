@@ -1,21 +1,18 @@
-var roleHarvester = require('role.harvester');
-var roleUpgrader = require('role.upgrader');
-var roleBuilder = require('role.builder');
+module.exports = {
+    /**
+     * @param {Object} room 房间 
+     * @param {Array} enemys 敌人集合
+     */
+    run: function(room,enemys){
 
-module.exports.loop = function () {
-    for(let i in Game.rooms){
-        let room = Game.rooms[i];
+        // 从建筑中找出房间内所有的防御塔
         let towers = room.find(FIND_MY_STRUCTURES,{
             filter:item=>{
                 return item.structureType == STRUCTURE_TOWER
             }
         });
-        let enemys = room.find(FIND_CREEPS,{
-            filter:item=>{
-                return !item.my
-            }
-        });
-        // console.log(JSON.stringify(enemys))
+        
+        // 如果房间内有敌人，则命令所有的防御塔进行攻击
         if(enemys.length){
             towers.map(item=>{
                 let attack = item.attack(enemys[0]);

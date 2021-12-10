@@ -4,12 +4,23 @@ const roleExtension = require('role.extension'); // 运输能量至虫巢或扩�
 const roleClaim = require('role.claim'); // 占领 
 const methods = require('methods');// 方法集合
 const structure_list = require('structure_list'); // 将所有存在过的建筑存放在room的memory中，当建筑不存在后将自动创造工地
+const tower = require('tower'); // 防御塔功能运行
 module.exports.loop = function () {
     structure_list.run();
     let creepArr = _.filter(Game.creeps, (creep) => creep);
-    // for (let name in Game.rooms) {
-    //     console.log("房间 " +name+"有"+Game.rooms[name].energyAvailable+"能量");
-    // }
+
+    for(let room_index in Game.rooms){
+        let room = Game.rooms[room_index];
+
+        // 敌人集合
+        let enemys = room.find(FIND_CREEPS,{
+            filter:item=>{
+                return !item.my
+            }
+        });
+
+        tower.run(room,enemys)
+    }
 
     for(let name in Memory.creeps){
         if(!Game.creeps[name]){
@@ -20,7 +31,7 @@ module.exports.loop = function () {
     methods.role_spawn({
         role_name:'harvester',
         spawn_name:'Spawn1',
-        num:3,
+        num:2,
         body_json:{'work':1,'carry':1,'move':1}
     });
     
@@ -28,7 +39,7 @@ module.exports.loop = function () {
         role_name:'upgrade',
         spawn_name:'Spawn1',
         num:5,
-        body_json:{'work':3,'carry':1,'move':1}
+        body_json:{'work':1,'carry':1,'move':1}
     });
     
     methods.role_spawn({
@@ -55,7 +66,8 @@ module.exports.loop = function () {
         }else if(creep.memory.role === 'upgrade'){
             roleUpgrader.run(creep);
         }else if(creep.memory.role === 'builder'){
-            roleBuilder.run(creep);
+            roleBuilder.run(creep,1);
+            roleExtension.run(creep,1);
         }
     }
 
