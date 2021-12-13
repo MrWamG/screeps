@@ -5,18 +5,10 @@ let roleBuilder = {
      * @param {Object} specify 指定某个工地进行建造
      */
     run: function (creep,sourceIndex = 0,specify) {
-        /* 如果爬虫处于建筑状态且负载的能量为0的时候*/
-        /* && 且 左右两边都为真时即为真，一假即假*/
-        if (creep.memory.building && creep.carry.energy == 0) {
-            /* 将爬虫设置为非建筑状态，并说出🔄 harvest*/
+        // 没能量了就进入采集状态
+        if(creep.carry.energy == 0){
             creep.memory.building = false;
             creep.say('🔄 harvest');
-        }
-        /* 如果爬虫不处于建筑状态且爬虫能量满载的时候*/
-        if (!creep.memory.building && creep.carry.energy == creep.carryCapacity) {
-            /* 将爬虫设置为建筑状态，并说出🔄 harvest*/
-            creep.memory.building = true;
-            creep.say('🚧 build');
         }
         /* 如果爬虫处于建筑状态*/
         if (creep.memory.building) {
@@ -51,6 +43,11 @@ let roleBuilder = {
                 }
             }
         }else { /* 否则去采集资源 */
+            // 如果能量满了就进入建造状态
+            if(creep.carry.energy == creep.carryCapacity){
+                creep.memory.building = true;
+                creep.say('🚧 build');
+            }
             let sources = creep.room.find(FIND_SOURCES);
             if (creep.harvest(sources[sourceIndex]) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(sources[sourceIndex], {
