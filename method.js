@@ -12,6 +12,8 @@ module.exports = {
             Game.spawns[spawn_name].spawnCreep(body_part, newName, {
                 memory,
             });
+        }else{
+            console.log(spawn_name + '不存在');
         }
     },
     /** 检索creeps中的身份，对每种身份进行数量要求定义每种身份所需要的身体
