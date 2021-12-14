@@ -8,9 +8,11 @@ module.exports = {
         let body_part = [];
         Object.entries(body_json).forEach(([key,value]) => body_part.push(...Array(value).fill(key)));
         let newName = role_name + Game.time;
-        Game.spawns[spawn_name].spawnCreep(body_part, newName, {
-            memory,
-        });
+        if(Game.spawns[spawn_name]){
+            Game.spawns[spawn_name].spawnCreep(body_part, newName, {
+                memory,
+            });
+        }
     },
     /** 检索creeps中的身份，对每种身份进行数量要求定义每种身份所需要的身体
     * @param {Object} body_json 身体组件，传入组件的字符串而非常量
