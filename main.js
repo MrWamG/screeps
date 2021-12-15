@@ -7,7 +7,6 @@ const structure_list = require('structure_list'); // 将所有存在过的建筑
 const tower = require('tower'); // 防御塔功能运行
 module.exports.loop = function () {
     structure_list.run();
-    let creepArr = _.filter(Game.creeps, (creep) => creep);
     if (Game.cpu.bucket >= 10000) {
         Game.cpu.generatePixel();
     }
@@ -17,11 +16,14 @@ module.exports.loop = function () {
             delete Memory.creeps[name];
         }
     }
+    
+    let creepArr = _.filter(Game.creeps, (creep) => creep);
 
     // 每个房间的循环
     for (let room_index in Game.rooms) {
+        // 当前房间
         let room = Game.rooms[room_index];
-
+        console.log('room',JSON.stringify(room))
         // 敌人集合
         let enemys = room.find(FIND_CREEPS, {
             filter: item => {
@@ -112,11 +114,7 @@ module.exports.loop = function () {
             } else if (creep.memory.role === 'upgrade') {
                 roleUpgrader.run(creep);
             } else if (creep.memory.role === 'builder') {
-                if(room.name == 'W41S54'){
-                    roleBuilder.run(creep, 1, room);
-                }else if(room.name == 'W42S54'){
-                    roleExtension.run(creep, 0, room);
-                }
+                roleBuilder.run(creep, 0, room);
             } else if (creep.memory.role === 'claim') {
                 roleClaim.run(creep,'W42S54')
             }
