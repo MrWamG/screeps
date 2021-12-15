@@ -5,19 +5,31 @@ module.exports = {
             {
                 role_name: 'harvester',
                 spawn:spawn[0],
-                num: 1,
-                body_json: {'work': 1,'carry': 1,'move': 1}
+                num: 2,
+                body_json: {
+                    'work': 1,
+                    'carry': 1,
+                    'move': 1
+                }
             },{
                 role_name: 'upgrade',
                 spawn:spawn[0],
-                num: 2,
-                body_json: {'work': 1,'carry': 1,'move': 1}
+                num: 4,
+                body_json: {
+                    'work': 3,
+                    'carry': 2,
+                    'move': 2
+                }
             },{
                 role_name: 'builder',
                 spawn:spawn[0],
-                num: 1,
-                body_json: {'work': 1,'carry': 1,'move': 1}
-            },
+                num: 2,
+                body_json: {
+                    'work': 1,
+                    'carry': 1,
+                    'move': 1
+                }
+            }
         ];
 
         for(let i in role_spawn_arr){
@@ -32,11 +44,11 @@ module.exports = {
             let creep = roomCreepArr[i];
             if (creep.memory.role === 'harvester') {
                 console.log(room.name);
-                main.roleExtension.run(creep, 0);
+                main.roleExtension.run(creep, 1);
             } else if (creep.memory.role === 'upgrade') {
                 main.roleUpgrader.run(creep);
-            } else if (creep.memory.role === 'builder') {                    
-                main.roleBuilder.run(creep, 0);
+            } else if (creep.memory.role === 'builder') {
+                main.roleBuilder.run(creep, 1);
             } else if (creep.memory.role === 'claim') {
                 main.roleClaim.run(creep,'W42S54')
             }

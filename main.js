@@ -10,7 +10,8 @@ const main = {
 }
 
 const room_run = {
-    W42S54:require('W42S54')
+    W41S54:require('W41S54'),
+    W42S54:require('W42S54'),
 }
 module.exports.loop = function () {
     main.structure_list.run();
@@ -93,62 +94,8 @@ module.exports.loop = function () {
 
         console.log('base_creep_num',base_creep_num)
         // 孵化creep
-        if(room.name == 'W41S54'){
-            for(let i in role_spawn_arr){
-                main.methods.role_spawn(role_spawn_arr[i]);
-            }
-        }else if(room.name == 'W42S54'){
-            main.methods.role_spawn({
-                role_name: 'harvester',
-                spawn:spawn[0],
-                num: 1,
-                body_json: {'work': 1,'carry': 1,'move': 1}
-            });
-            main.methods.role_spawn({
-                role_name: 'upgrade',
-                spawn:spawn[0],
-                num: 2,
-                body_json: {'work': 1,'carry': 1,'move': 1}
-            });
-            main.methods.role_spawn({
-                role_name: 'builder',
-                spawn:spawn[0],
-                num: 1,
-                body_json: {'work': 1,'carry': 1,'move': 1}
-            });
-        }
-
-        let roomCreepArr = creepArr.filter(item=>{
-            return item.room.name == room.name
-        })
-        if(room.name == 'W41S54'){
-            for (let i = 0; i < roomCreepArr.length; i++) {
-                let creep = roomCreepArr[i];
-                if (creep.memory.role === 'harvester') {
-                    console.log(room.name);
-                    main.roleExtension.run(creep, 1);
-                } else if (creep.memory.role === 'upgrade') {
-                    main.roleUpgrader.run(creep);
-                } else if (creep.memory.role === 'builder') {
-                    main.roleBuilder.run(creep, 1);
-                } else if (creep.memory.role === 'claim') {
-                    main.roleClaim.run(creep,'W42S54')
-                }
-            }
-        }else if(room.name == 'W42S54'){
-            for (let i = 0; i < roomCreepArr.length; i++) {
-                let creep = roomCreepArr[i];
-                if (creep.memory.role === 'harvester') {
-                    console.log(room.name);
-                    main.roleExtension.run(creep, 0);
-                } else if (creep.memory.role === 'upgrade') {
-                    main.roleUpgrader.run(creep);
-                } else if (creep.memory.role === 'builder') {                    
-                    main.roleBuilder.run(creep, 0);
-                } else if (creep.memory.role === 'claim') {
-                    main.roleClaim.run(creep,'W42S54')
-                }
-            }
+        for(let i in room_run){
+            room_run[i].run(main,creepArr,spawn,room);
         }
         
         // 只有当基础creep的数量大于等于须要生产的基础creep数量时才会生产claimer
