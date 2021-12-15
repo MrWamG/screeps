@@ -12,12 +12,13 @@ module.exports = {
             memory,
         });
     },
-    /** 检索creeps中的身份，对每种身份进行数量要求定义每种身份所需要的身体
-    * @param {Object} body_json 身体组件，传入组件的字符串而非常量
-    * @param {String} role_name creep的身份名称
-    * @param {Object} spawn 使用哪个孵化器生产creep
-    * @param {Number} num creep生产的最大数量
-    */
+    /** 
+     * 检索creeps中的身份，对每种身份进行数量要求定义每种身份所需要的身体
+     * @param {Object} body_json 身体组件，传入组件的字符串而非常量
+     * @param {String} role_name creep的身份名称
+     * @param {Object} spawn 使用哪个孵化器生产creep
+     * @param {Number} num creep生产的最大数量
+     */
     role_spawn({
         body_json = {},
         role_name = '',
@@ -40,7 +41,8 @@ module.exports = {
             })
         }
     },
-    /** 获取房间内Spawn以及extension的能量总量
+    /** 
+     * 获取房间内Spawn以及extension的能量总量
      * @param {Object} room 需要查询的房间对象
      */
     getSpawnEnergy(room) {
