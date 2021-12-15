@@ -54,48 +54,17 @@ module.exports.loop = function () {
         main.tower.run(room, enemys);
 
         console.log(room.name + '中可用于孵化的能量有:' + roomEnergy)
-
-        // 须要孵化的creep身份及其部件配置
-        let role_spawn_arr = [
-            {
-                role_name: 'harvester',
-                spawn:spawn[0],
-                num: 2,
-                body_json: {
-                    'work': 1,
-                    'carry': 1,
-                    'move': 1
-                }
-            },{
-                role_name: 'upgrade',
-                spawn:spawn[0],
-                num: 4,
-                body_json: {
-                    'work': 3,
-                    'carry': 2,
-                    'move': 2
-                }
-            },{
-                role_name: 'builder',
-                spawn:spawn[0],
-                num: 2,
-                body_json: {
-                    'work': 1,
-                    'carry': 1,
-                    'move': 1
-                }
-            }
-        ];
-
-        // 须要生产的基础creep数量
-        let base_creep_num = role_spawn_arr.reduce((total,item)=>{
-            return total + item.num
-        },0)
-
-        console.log('base_creep_num',base_creep_num)
         // 孵化creep
         for(let i in room_run){
-            room_run[i].run(main,creepArr,spawn,room);
+            if(room.name == i){
+                room_run[i].run(main,creepArr,spawn,room);
+                console.log(
+                    room.name + '中creeps num: '
+                    + creepArr.filter(item=>{
+                        return item.room.name == room.name
+                    }).length
+                );
+            }
         }
         
         // 只有当基础creep的数量大于等于须要生产的基础creep数量时才会生产claimer
@@ -111,12 +80,7 @@ module.exports.loop = function () {
         //         }
         //     });
         // }
-        console.log(
-            room.name + '中creeps num: '
-            + creepArr.filter(item=>{
-                return item.room.name == room.name
-            }).length
-        );
+        
         console.log(`<span style="color:#ff0000">${room.name}↑↑↑</span>`)
     } // 每个房间的循环
     

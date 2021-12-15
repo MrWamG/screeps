@@ -32,6 +32,12 @@ module.exports = {
             }
         ];
 
+        // 须要生产的基础creep数量
+        let base_creep_num = role_spawn_arr.reduce((total,item)=>{
+            return total + item.num
+        },0)
+        console.log('base_creep_num',base_creep_num)
+
         for(let i in role_spawn_arr){
             main.methods.role_spawn(role_spawn_arr[i]);
         }
@@ -43,7 +49,6 @@ module.exports = {
         for (let i = 0; i < roomCreepArr.length; i++) {
             let creep = roomCreepArr[i];
             if (creep.memory.role === 'harvester') {
-                console.log(room.name);
                 main.roleExtension.run(creep, 1);
             } else if (creep.memory.role === 'upgrade') {
                 main.roleUpgrader.run(creep);
