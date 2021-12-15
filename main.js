@@ -1,12 +1,19 @@
-const roleUpgrader = require('role.upgrader'); // 升级控制器
-const roleBuilder = require('role.builder'); // 建筑
-const roleExtension = require('role.extension'); // 运输能量至虫巢或扩容器
-const roleClaim = require('role.claim'); // 占领 
-const methods = require('methods'); // 方法集合
-const structure_list = require('structure_list'); // 将所有存在过的建筑存放在room的memory中，当建筑不存在后将自动创造工地
-const tower = require('tower'); // 防御塔功能运行
+
+const main = {
+    roleUpgrader:require('role.upgrader'), // 升级控制器
+    roleBuilder:require('role.builder'), // 建筑
+    roleExtension:require('role.extension'), // 运输能量至虫巢或扩容器
+    roleClaim:require('role.claim'), // 占领 
+    methods:require('methods'), // 方法集合
+    structure_list:require('structure_list'), // 将所有存在过的建筑存放在room的memory中，当建筑不存在后将自动创造工地
+    tower:require('tower'), // 防御塔功能运行
+}
+
+const room_run = {
+    W42S54:require('W42S54')
+}
 module.exports.loop = function () {
-    structure_list.run();
+    main.structure_list.run();
     if (Game.cpu.bucket >= 10000) {
         Game.cpu.generatePixel();
     }
@@ -16,14 +23,15 @@ module.exports.loop = function () {
             delete Memory.creeps[name];
         }
     }
-    
+
     let creepArr = _.filter(Game.creeps, (creep) => creep);
 
     // 每个房间的循环
     for (let room_index in Game.rooms) {
         // 当前房间
         let room = Game.rooms[room_index];
-        console.log('room',JSON.stringify(room))
+        console.log(`<span style="color:#00ffff">${room.name}↓↓↓</span>`)
+        
         // 敌人集合
         let enemys = room.find(FIND_CREEPS, {
             filter: item => {
@@ -31,7 +39,7 @@ module.exports.loop = function () {
             }
         });
         // 房间中用于孵化的能量总值
-        let roomEnergy = methods.getSpawnEnergy(room);
+        let roomEnergy = main.methods.getSpawnEnergy(room);
 
         /** 当前房间的孵化器
          * @type {Array}
@@ -42,7 +50,7 @@ module.exports.loop = function () {
         let maxWork = Math.max(1, Math.floor((roomEnergy - 200) / BODYPART_COST['work']));
         console.log('maxWork', maxWork);
         // Tower防御行为运转中
-        tower.run(room, enemys);
+        main.tower.run(room, enemys);
 
         console.log(room.name + '中可用于孵化的能量有:' + roomEnergy)
 
@@ -87,43 +95,66 @@ module.exports.loop = function () {
         // 孵化creep
         if(room.name == 'W41S54'){
             for(let i in role_spawn_arr){
-                methods.role_spawn(role_spawn_arr[i]);
+                main.methods.role_spawn(role_spawn_arr[i]);
             }
         }else if(room.name == 'W42S54'){
-            methods.role_spawn({
+            main.methods.role_spawn({
                 role_name: 'harvester',
                 spawn:spawn[0],
-                num: 2,
+                num: 1,
                 body_json: {'work': 1,'carry': 1,'move': 1}
             });
-            methods.role_spawn({
+            main.methods.role_spawn({
                 role_name: 'upgrade',
                 spawn:spawn[0],
                 num: 2,
                 body_json: {'work': 1,'carry': 1,'move': 1}
             });
-        }
-        for (let i = 0; i < creepArr.length; i++) {
-            let creep = creepArr[i];
-            if (creep.memory.role === 'harvester') {
-                if(room.name == 'W41S54'){
-                    roleExtension.run(creep, 1);
-                }else if(room.name == 'W42S54'){
-                    roleExtension.run(creep, 0);
-                }
-            } else if (creep.memory.role === 'upgrade') {
-                roleUpgrader.run(creep);
-            } else if (creep.memory.role === 'builder') {
-                roleBuilder.run(creep, 0, room);
-            } else if (creep.memory.role === 'claim') {
-                roleClaim.run(creep,'W42S54')
-            }
+            main.methods.role_spawn({
+                role_name: 'builder',
+                spawn:spawn[0],
+                num: 1,
+                body_json: {'work': 1,'carry': 1,'move': 1}
+            });
         }
 
+        let roomCreepArr = creepArr.filter(item=>{
+            return item.room.name == room.name
+        })
+        if(room.name == 'W41S54'){
+            for (let i = 0; i < roomCreepArr.length; i++) {
+                let creep = roomCreepArr[i];
+                if (creep.memory.role === 'harvester') {
+                    console.log(room.name);
+                    main.roleExtension.run(creep, 1);
+                } else if (creep.memory.role === 'upgrade') {
+                    main.roleUpgrader.run(creep);
+                } else if (creep.memory.role === 'builder') {
+                    main.roleBuilder.run(creep, 1);
+                } else if (creep.memory.role === 'claim') {
+                    main.roleClaim.run(creep,'W42S54')
+                }
+            }
+        }else if(room.name == 'W42S54'){
+            for (let i = 0; i < roomCreepArr.length; i++) {
+                let creep = roomCreepArr[i];
+                if (creep.memory.role === 'harvester') {
+                    console.log(room.name);
+                    main.roleExtension.run(creep, 0);
+                } else if (creep.memory.role === 'upgrade') {
+                    main.roleUpgrader.run(creep);
+                } else if (creep.memory.role === 'builder') {                    
+                    main.roleBuilder.run(creep, 0);
+                } else if (creep.memory.role === 'claim') {
+                    main.roleClaim.run(creep,'W42S54')
+                }
+            }
+        }
+        
         // 只有当基础creep的数量大于等于须要生产的基础creep数量时才会生产claimer
         // 我毕竟须要保障我当前基地的基本运营
         // if(creepArr.filter(item=>{return item.memory.role !== 'claim'}).length >= base_creep_num){
-        //     methods.role_spawn({
+        //     main.methods.role_spawn({
         //         role_name: 'claim',
         //         spawn_name: 'Spawn1',
         //         num: 1,
@@ -133,7 +164,13 @@ module.exports.loop = function () {
         //         }
         //     });
         // }
+        console.log(
+            room.name + '中creeps num: '
+            + creepArr.filter(item=>{
+                return item.room.name == room.name
+            }).length
+        );
+        console.log(`<span style="color:#ff0000">${room.name}↑↑↑</span>`)
     } // 每个房间的循环
     
-    console.log('creeps num: ' + creepArr.length);
 }
