@@ -5,7 +5,6 @@ module.exports = {
         spawn,
         memory,
     }) {
-        console.log('spawn_creeper',spawn);
         let body_part = [];
         Object.entries(body_json).forEach(([key,value]) => body_part.push(...Array(value).fill(key)));
         let newName = role_name + Game.time;
