@@ -1,5 +1,6 @@
 module.exports = {
     run:function(main,creepArr,spawn,room){
+        let roomEnergy = main.methods.getSpawnEnergy(room);
         // 须要孵化的creep身份及其部件配置
         let role_spawn_arr = [
             {
@@ -10,14 +11,15 @@ module.exports = {
             },{
                 role_name: 'upgrade',
                 spawn:spawn[0],
-                num: 2,
-                body_json: {'work': 1,'carry': 1,'move': 1}
-            },{
-                role_name: 'builder',
-                spawn:spawn[0],
-                num: 1,
-                body_json: {'work': 1,'carry': 1,'move': 1}
+                num: 4,
+                body_json: main.methods.setDynamicBodyPart(roomEnergy),// 自适应部件填充
             },
+            // {
+            //     role_name: 'builder',
+            //     spawn:spawn[0],
+            //     num: 1,
+            //     body_json: {'work': 1,'carry': 1,'move': 1}
+            // },
         ];
 
         // 须要生产的基础creep数量
