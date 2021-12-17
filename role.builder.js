@@ -3,8 +3,9 @@ let roleBuilder = {
      * @param {Object} creep 指定的爬
      * @param {Number} sourceIndex 能量矿下标
      * @param {Object} specify 指定某个工地进行建造
+     * @param {String} restFlag 休息点的FLAG名称
      */
-    run: function (creep,sourceIndex = 0,specify) {
+    run: function (creep,sourceIndex = 0,restFlag = "",specify) {
         // 没能量了就进入采集状态
         if(creep.carry.energy == 0){
             creep.memory.building = false;
@@ -38,6 +39,15 @@ let roleBuilder = {
                     creep.moveTo(repairTargets, {
                         visualizePathStyle: {
                             stroke: '#d2ff3c'
+                        }
+                    });
+                }
+            }else{// 如果既不用建造又不用维修则找一处不会影响到其他爬的地方休息待命
+                if(restFlag){
+                    let restPoint = Game.flags[restFlag]
+                    creep.moveTo(restPoint, {
+                        visualizePathStyle: {
+                            stroke: '#000000'
                         }
                     });
                 }

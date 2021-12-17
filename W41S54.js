@@ -16,9 +16,9 @@ module.exports = {
                 spawn:spawn[0],
                 num: 4,
                 body_json: {
-                    'work': 3,
-                    'carry': 2,
-                    'move': 2
+                    'work': 1,
+                    'carry': 1,
+                    'move': 1
                 }
             },{
                 role_name: 'builder',
@@ -53,7 +53,7 @@ module.exports = {
             } else if (creep.memory.role === 'upgrade') {
                 main.roleUpgrader.run(creep);
             } else if (creep.memory.role === 'builder') {
-                main.roleBuilder.run(creep, 1);
+                main.roleBuilder.run(creep, 1,'W41S54Rest');
             } else if (creep.memory.role === 'claim') {
                 main.roleClaim.run(creep,'W42S54')
             }
