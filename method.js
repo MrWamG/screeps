@@ -25,7 +25,6 @@ module.exports = {
         spawn = {},
         num = 0,
     }) {
-        console.log('spawn',spawn);
         let creepArr = _.filter(Game.creeps, (creep) => creep);
         let creep = creepArr.filter(item => {
             return (item.memory.role === role_name) && (item.room === spawn.room);
@@ -53,5 +52,37 @@ module.exports = {
         }).reduce((total,item)=>{
             return total + Number(item.store.energy);
         },0)
+    },
+    /** 
+     * 动态身体部件，根据当前房间可用的孵化能量去设置爬的部件
+     * @param {Number} roomEnergy 当前房间的能量数
+     */
+    setDynamicBodyPart(roomEnergy){
+        let dynamicBodyPart = {
+            work:0,
+            carry:0,
+            move:0
+        };
+
+        // 50为work,carry,move其中一个最小组件的能量消耗值(carry&move)
+        for(let i = 1;i<Math.floor(roomEnergy / 50)+1;i++){
+            if(i % 2 === 0){
+                if(i % 3 === 0){
+                    dynamicBodyPart.carry ++;
+                    dynamicBodyPart.move ++;
+                }else{
+                    dynamicBodyPart.work ++;
+                }
+            }
+        }
+
+        for(let i in dynamicBodyPart){
+            // 如果当前能量不满足一个标准的work,carry,move爬的孵化则将它们设置一个最基础的部件要求(1)，避免生产出某一项能量为0的爬以至于无法正常工作
+            if(dynamicBodyPart[i] == 0){
+                dynamicBodyPart[i] = 1;
+            }
+        }
+
+        return dynamicBodyPart
     }
 }
