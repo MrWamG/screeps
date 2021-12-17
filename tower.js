@@ -11,13 +11,27 @@ module.exports = {
                 return item.structureType == STRUCTURE_TOWER
             }
         });
+
+        // 需要维修的建筑
+        let repairTargets = room.find(FIND_STRUCTURES,{
+            filter: (item) => {
+                return item.hits < item.hitsMax
+            }
+        })
         
         // 如果房间内有敌人，则命令所有的防御塔进行攻击
         if(enemys.length){
             towers.map(item=>{
                 let attack = item.attack(enemys[0]);
                 if(attack !== OK){
-                    console.log('防御塔=>',JSON.stringify(attack))
+                    console.log('防御塔攻击=>',JSON.stringify(attack))
+                }
+            })
+        }else if(repairTargets.length){ // 如果房间内没有敌人且存在需要维修的建筑
+            towers.map(item=>{
+                let repair = item.repair(repairTargets[0]);
+                if(repair !== OK){
+                    console.log('防御塔维修=>',JSON.stringify(repair))
                 }
             })
         }
