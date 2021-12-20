@@ -1,20 +1,21 @@
 module.exports = {
 
-    run: function (creep,sourceIndex = 0) {
-
-        if (creep.carry.energy < creep.carryCapacity) {
+    run(creep,sourceIndex = 0) {
+        // 如果爬处于采集状态
+        if (creep.memory.harvest) {
             let sources = creep.room.find(FIND_SOURCES);
 
             if (creep.harvest(sources[sourceIndex]) == ERR_NOT_IN_RANGE) {
-
                 creep.moveTo(sources[sourceIndex], {
                     visualizePathStyle: {
                         stroke: '#ffaa00'
                     }
                 });
-
             }
 
+            if (creep.carry.energy == creep.store.getCapacity()) {
+                creep.memory.harvest = false;
+            }
         } else {
             creep.say('transfer');
             /*creep.room.find(参数1：查找的类型,参数2：对象数组)*/
@@ -24,14 +25,18 @@ module.exports = {
 
                 filter: (structure) => {
 
-                    return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_TOWER || structure.structureType == STRUCTURE_STORAGE) &&
-
-                        structure.energy < structure.energyCapacity;
+                    return (
+                        structure.structureType == STRUCTURE_EXTENSION 
+                        || structure.structureType == STRUCTURE_SPAWN 
+                        || structure.structureType == STRUCTURE_TOWER 
+                    )
+                    && structure.energy < structure.energyCapacity
+                    || structure.structureType == STRUCTURE_STORAGE;
 
                 }
 
             });
-
+            
             if (targets.length > 0) {
                 // 找到更近的虫巢或扩容器
                 let closerTarget = creep.pos.findClosestByRange(targets);
@@ -43,9 +48,12 @@ module.exports = {
                             stroke: '#ffffff'
                         }
                     });
-
                 }
-
+            }
+            
+            // 如果能量都运输完毕了，则回到采集状态
+            if (creep.carry.energy == 0) {
+                creep.memory.harvest = true;
             }
 
         }
