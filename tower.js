@@ -28,8 +28,8 @@ module.exports = {
                 }
             })
         }else if(repairTargets.length){ // 如果房间内没有敌人且存在需要维修的建筑
-            towers.map(item=>{
-                let repair = item.repair(repairTargets[0]);
+            towers.map((item,index)=>{
+                let repair = item.repair(repairTargets[index]);
                 if(repair !== OK){
                     console.log('防御塔维修=>',JSON.stringify(repair))
                 }
