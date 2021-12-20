@@ -35,8 +35,8 @@ let roleBuilder = {
                     });
                 }
             }else if(repairTargets.length){// 如果没有需要建造的工地则去维护建筑
-                if(creep.repair(repairTargets) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(repairTargets, {
+                if(creep.repair(repairTargets[0]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(repairTargets[0], {
                         visualizePathStyle: {
                             stroke: '#d2ff3c'
                         }
