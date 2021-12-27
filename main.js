@@ -14,7 +14,7 @@ const room_run = {
     W42S54:require('W42S54'),
 }
 module.exports.loop = function () {
-    main.structure_list.run();
+    // main.structure_list.run();
     if (Game.cpu.bucket >= 10000) {
         Game.cpu.generatePixel();
     }
@@ -44,7 +44,7 @@ module.exports.loop = function () {
 
         /** 当前房间的孵化器
          * @type {Array}
-         */
+         */             
         let spawn = room.find(FIND_MY_SPAWNS);
         
         // 最大的工作部件，最低不得小于1，200为1carry + 1move + 生产creep本身需要的100能量

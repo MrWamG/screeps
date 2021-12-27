@@ -15,7 +15,7 @@ module.exports = {
         // 需要维修的建筑
         let repairTargets = room.find(FIND_STRUCTURES,{
             filter: (item) => {
-                return item.hits < item.hitsMax
+                return (item.hits < item.hitsMax) && item.structureType !== STRUCTURE_WALL && item.structureType !== STRUCTURE_RAMPART
             }
         })
         
