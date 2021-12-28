@@ -1,6 +1,6 @@
 module.exports = {
     run:function(main,creepArr,spawn,room){
-        let roomEnergy = main.methods.getSpawnEnergy(room);
+        let roomEnergy = global.methods.getSpawnEnergy(room);
         // 须要孵化的creep身份及其部件配置
         let role_spawn_arr = [
             {
@@ -12,7 +12,7 @@ module.exports = {
                 role_name: 'upgrade',
                 spawn:spawn[0],
                 num: 4,
-                body_json: main.methods.setDynamicBodyPart(roomEnergy),// 自适应部件填充
+                body_json: global.methods.setDynamicBodyPart(roomEnergy),// 自适应部件填充
             },
             {
                 role_name: 'builder',
@@ -29,7 +29,7 @@ module.exports = {
         console.log('base_creep_num',base_creep_num)
 
         for(let i in role_spawn_arr){
-            main.methods.role_spawn(role_spawn_arr[i]);
+            global.methods.role_spawn(role_spawn_arr[i]);
         }
 
         let roomCreepArr = creepArr.filter(item=>{

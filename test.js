@@ -1,10 +1,15 @@
 const tower = require('tower'); // 防御塔功能运行
 const roleExtension = require('role.extension'); // 运输能量至虫巢或扩容器
+const roleTransfer = require('role.transfer'); // 搬运工
+global.methods = require('method');
 module.exports.loop = function () {
     let creepArr = _.filter(Game.creeps, (creep) => creep);
     for(let i in creepArr){
         let creep = creepArr[i];
-        roleExtension.run(creep,1);
+        roleTransfer.run(
+            creep,
+            RESOURCE_ENERGY
+        );
     }
 
     // 房间循环

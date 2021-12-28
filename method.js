@@ -85,5 +85,20 @@ module.exports = {
         }
 
         return dynamicBodyPart
+    },
+    /** 
+     * 将对象中的键值遍历相加
+     * @param {Object} obj 需要遍历的对象
+     */
+     objTotalNum(obj){
+        if(JSON.stringify(obj) !== '{}'){
+            return Object.values(obj).filter((value) => {
+                return typeof value === 'number';
+            }).reduce((tole, value) => {
+                return tole + value;
+            });
+        }else{
+            return 0
+        }
     }
 }

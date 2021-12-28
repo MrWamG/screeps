@@ -1,29 +1,33 @@
-// 搬运工
+// 目前的功能是将资源从storage中搬运至terminal
 module.exports = {
-    run: function (creep) {
-        let targets = creep.room.find(FIND_STRUCTURES, {
-            /* 这是一个过滤器，过滤建筑，返回建筑类型是扩容器或者虫巢，条件是未满载的*/
-            filter: (structure) => {
-
-                return (structure.structureType == STRUCTURE_EXTENSION || structure.structureType == STRUCTURE_SPAWN || structure.structureType == STRUCTURE_TOWER || structure.structureType == STRUCTURE_STORAGE) && structure.energy < structure.energyCapacity;
-
+    /**
+     * @param {Object} creep 执行人
+     * @param {String} resourceType 需要搬运的资源类型
+     */
+    run: function (
+        creep,
+        resourceType
+    ) {
+        let storage = creep.room.storage;
+        let terminal = creep.room.terminal;
+        if(storage && terminal){
+            if(global.methods.objTotalNum(creep.store) == 0 ){
+                if(creep.withdraw(storage,resourceType) == ERR_NOT_IN_RANGE){
+                    creep.moveTo(storage, {
+                        visualizePathStyle: {
+                            stroke: '#ffaa00'
+                        }
+                    });
+                }
+            }else{
+                if (creep.transfer(terminal, resourceType) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(terminal, {
+                        visualizePathStyle: {
+                            stroke: '#ffffff'
+                        }
+                    });
+                }
             }
-        });
-        
-        if (targets.length > 0) {
-            // 找到更近的虫巢或扩容器
-            let closerTarget = creep.pos.findClosestByRange(targets);
-
-            if (creep.transfer(closerTarget, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-
-                creep.moveTo(closerTarget, {
-                    visualizePathStyle: {
-                        stroke: '#ffffff'
-                    }
-                });
-
-            }
-
         }
     }
 }

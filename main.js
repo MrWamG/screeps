@@ -4,7 +4,6 @@ const main = {
     roleBuilder:require('role.builder'), // 建筑
     roleExtension:require('role.extension'), // 运输能量至虫巢或扩容器
     roleClaim:require('role.claim'), // 占领 
-    methods:require('methods'), // 方法集合
     structure_list:require('structure_list'), // 将所有存在过的建筑存放在room的memory中，当建筑不存在后将自动创造工地
     tower:require('tower'), // 防御塔功能运行
 }
@@ -13,6 +12,7 @@ const room_run = {
     W41S54:require('W41S54'),
     W42S54:require('W42S54'),
 }
+global.methods = require('methods');
 module.exports.loop = function () {
     // main.structure_list.run();
     if (Game.cpu.bucket >= 10000) {
@@ -40,7 +40,7 @@ module.exports.loop = function () {
             }
         });
         // 房间中用于孵化的能量总值
-        let roomEnergy = main.methods.getSpawnEnergy(room);
+        let roomEnergy = global.methods.getSpawnEnergy(room);
 
         /** 当前房间的孵化器
          * @type {Array}
@@ -70,7 +70,7 @@ module.exports.loop = function () {
         // 只有当基础creep的数量大于等于须要生产的基础creep数量时才会生产claimer
         // 我毕竟须要保障我当前基地的基本运营
         // if(creepArr.filter(item=>{return item.memory.role !== 'claim'}).length >= base_creep_num){
-        //     main.methods.role_spawn({
+        //     global.methods.role_spawn({
         //         role_name: 'claim',
         //         spawn_name: 'Spawn1',
         //         num: 1,
