@@ -1,6 +1,5 @@
 var roleUpgrader = {
     run(creep,sourceIndex = 0) {
-        creep.say('upgrade');
         if (creep.memory.status == 0) {
             var sources = creep.room.find(FIND_SOURCES);
             if (creep.harvest(sources[sourceIndex]) == ERR_NOT_IN_RANGE) {

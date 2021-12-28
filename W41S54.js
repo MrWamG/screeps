@@ -51,7 +51,7 @@ module.exports = {
             } else if (creep.memory.role === 'builder') {
                 main.roleBuilder.run(creep, 0, 'W42S54Rest');
             } else if (creep.memory.role === 'transfer') {
-                main.roleTransfer.run(creep,RESOURCE_ENERGY); // 将storage中的能量运输至terminal
+                // main.roleTransfer.run(creep,RESOURCE_ENERGY); // 将storage中的能量运输至terminal
             } else if (creep.memory.role === 'claim') {
                 main.roleClaim.run(creep,'W42S54')
             }
