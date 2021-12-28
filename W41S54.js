@@ -20,6 +20,12 @@ module.exports = {
                 num: 1,
                 body_json: {'work': 1,'carry': 1,'move': 1}
             },
+            {
+                role_name: 'transfer',
+                spawn:spawn[0],
+                num: 1,
+                body_json: {'work': 1,'carry': 1,'move': 1}
+            },
         ];
 
         // 须要生产的基础creep数量
@@ -42,8 +48,10 @@ module.exports = {
                 main.roleExtension.run(creep, 0);
             } else if (creep.memory.role === 'upgrade') {
                 main.roleUpgrader.run(creep);
-            } else if (creep.memory.role === 'builder') {                    
+            } else if (creep.memory.role === 'builder') {
                 main.roleBuilder.run(creep, 0, 'W42S54Rest');
+            } else if (creep.memory.role === 'transfer') {
+                main.roleTransfer.run(creep,RESOURCE_ENERGY); // 将storage中的能量运输至terminal
             } else if (creep.memory.role === 'claim') {
                 main.roleClaim.run(creep,'W42S54')
             }

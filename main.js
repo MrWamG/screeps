@@ -4,6 +4,7 @@ const main = {
     roleBuilder:require('role.builder'), // 建筑
     roleExtension:require('role.extension'), // 运输能量至虫巢或扩容器
     roleClaim:require('role.claim'), // 占领 
+    roleTransfer:require('role.transfer'), // 运输者，目前负责将storage中的资源运输至terminal
     structure_list:require('structure_list'), // 将所有存在过的建筑存放在room的memory中，当建筑不存在后将自动创造工地
     tower:require('tower'), // 防御塔功能运行
 }
