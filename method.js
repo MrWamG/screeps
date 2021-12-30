@@ -6,7 +6,7 @@ module.exports = {
         memory,
     }) {
         let body_part = [];
-        Object.entries(body_json).forEach(([key,value]) => body_part.push(...Array(value).fill(key)));
+        Object.entries(body_json).forEach(([key, value]) => body_part.push(...Array(value).fill(key)));
         let newName = role_name + Game.time;
         spawn.spawnCreep(body_part, newName, {
             memory,
@@ -45,43 +45,43 @@ module.exports = {
      * @param {Object} room 需要查询的房间对象
      */
     getSpawnEnergy(room) {
-        return room.find(FIND_STRUCTURES,{
-            filter:item=>{
+        return room.find(FIND_STRUCTURES, {
+            filter: item => {
                 return item.structureType === STRUCTURE_SPAWN || item.structureType === STRUCTURE_EXTENSION
             }
-        }).reduce((total,item)=>{
+        }).reduce((total, item) => {
             return total + Number(item.store.energy);
-        },0)
+        }, 0)
     },
     /** 
      * 动态身体部件，根据当前房间可用的孵化能量去设置爬的部件
      * @param {Number} roomEnergy 当前房间的能量数
      */
-    setDynamicBodyPart(roomEnergy){
+    setDynamicBodyPart(roomEnergy) {
         let dynamicBodyPart = {
-            work:0,
-            carry:0,
-            move:0
+            work: 0,
+            carry: 0,
+            move: 0
         };
 
         // 100为work,carry,move其中一个最大组件的能量消耗值(work)
-        for(let i = 1;i<Math.floor(roomEnergy / 100)+1;i++){
-            if(i % 2 === 0){
-                dynamicBodyPart.carry ++;
-                dynamicBodyPart.move ++;
-            }else{
-                dynamicBodyPart.work ++;
+        for (let i = 1; i < Math.floor(roomEnergy / 100) + 1; i++) {
+            if (i % 2 === 0) {
+                dynamicBodyPart.carry++;
+                dynamicBodyPart.move++;
+            } else {
+                dynamicBodyPart.work++;
             }
 
             // 如果能量不满足一百但大于50则将这50利用干净，转换为move组件
-            if(roomEnergy % 100 >= 50 && i === Math.floor(roomEnergy / 100)){
-                dynamicBodyPart.move ++;
+            if (roomEnergy % 100 >= 50 && i === Math.floor(roomEnergy / 100)) {
+                dynamicBodyPart.move++;
             }
         }
-        
-        for(let i in dynamicBodyPart){
+
+        for (let i in dynamicBodyPart) {
             // 如果当前能量不满足一个标准的work,carry,move爬的孵化则将它们设置一个最基础的部件要求(1)，避免生产出某一项能量为0的爬以至于无法正常工作
-            if(dynamicBodyPart[i] == 0) dynamicBodyPart[i] = 1;
+            if (dynamicBodyPart[i] == 0) dynamicBodyPart[i] = 1;
         }
 
         return dynamicBodyPart
@@ -90,15 +90,33 @@ module.exports = {
      * 将对象中的键值遍历相加
      * @param {Object} obj 需要遍历的对象
      */
-     objTotalNum(obj){
-        if(JSON.stringify(obj) !== '{}'){
+    objTotalNum(obj) {
+        if (JSON.stringify(obj) !== '{}') {
             return Object.values(obj).filter((value) => {
                 return typeof value === 'number';
             }).reduce((tole, value) => {
                 return tole + value;
             });
-        }else{
+        } else {
             return 0
         }
-    }
+    },
+    /**
+     * 将对象中的最大值/最小值取出
+     * @param {Object} data // 需要取出最大值的对象
+     * @param {Boolean} getMax // 取最大值还是取最小值
+     */
+    polesObjValue(data,getMax = true) {
+        let list = [];
+        for (let i in data) {
+            list.push({
+                key:i,
+                value:parseInt(data[i])
+            });
+        }
+        list.sort((item1, item2) => {
+            return item1.value - item2.value;
+        });
+        return list[getMax ? list.length - 1 : 0];
+    },
 }
