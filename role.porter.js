@@ -1,4 +1,8 @@
 module.exports = {
+    /**
+     * 搬运者，负责将container中的资源搬运至指定的建筑中
+     * @param {Object} creep 执行该角色的creep
+     */
     run(creep) {
         // 如果爬处于提取状态
         if (creep.memory.transfer) {
