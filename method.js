@@ -82,6 +82,7 @@ module.exports = {
         for (let i in dynamicBodyPart) {
             // 如果当前能量不满足一个标准的work,carry,move爬的孵化则将它们设置一个最基础的部件要求(1)，避免生产出某一项能量为0的爬以至于无法正常工作
             if (dynamicBodyPart[i] == 0) dynamicBodyPart[i] = 1;
+            if (dynamicBodyPart[i] >= 10) dynamicBodyPart[i] = 10; // creep的最大部件数量不得大于50，否则无法spawn 返回状态码-10（无效的部件参数
         }
 
         return dynamicBodyPart
