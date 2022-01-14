@@ -22,6 +22,13 @@ let roleBuilder = {
                     return item.hits < item.hitsMax
                 }
             })
+
+            // 如果爬不在工地所处的房间里就先向那个房间走
+            if(buildTargets[0].room.name !== creep.room.name){
+                creep.moveTo(new RoomPosition(25, 25, buildTargets[0].room.name));
+                return;
+            }
+
             /* 如果有等待的需要建造的建筑*/
             if (buildTargets.length) {
                 // 找到更近的虫巢或扩容器
