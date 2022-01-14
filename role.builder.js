@@ -4,8 +4,16 @@ let roleBuilder = {
      * @param {Number} sourceIndex 能量矿下标
      * @param {Object} specify 指定某个工地进行建造
      * @param {String} restFlag 休息点的FLAG名称
+     * @param {String} target_room_name 去哪个房间进行工作
      */
-    run: function (creep,sourceIndex = 0,restFlag = "",specify) {
+    run: function (creep,sourceIndex = 0,restFlag = "",target_room_name) {
+
+        // 如果指定了目标房间则先往目标房间走
+        if(target_room_name && target_room_name !== creep.room.name){
+            creep.moveTo(new RoomPosition(25, 25, target_room_name));
+            return;
+        }
+
         // 没能量了就进入采集状态
         if(creep.carry.energy == 0){
             creep.memory.building = false;
@@ -14,7 +22,7 @@ let roleBuilder = {
         /* 如果爬虫处于建筑状态*/
         if (creep.memory.building) {
             /* 获取当前爬虫房间内的待建设的建筑数组*/
-            let buildTargets = specify || creep.room.find(FIND_CONSTRUCTION_SITES);
+            let buildTargets = creep.room.find(FIND_CONSTRUCTION_SITES);
 
             /* 获取需要维修的建筑 */
             let repairTargets = creep.room.find(FIND_STRUCTURES,{
@@ -22,12 +30,6 @@ let roleBuilder = {
                     return item.hits < item.hitsMax
                 }
             })
-
-            // 如果爬不在工地所处的房间里就先向那个房间走
-            if(buildTargets[0].room.name !== creep.room.name){
-                creep.moveTo(new RoomPosition(25, 25, buildTargets[0].room.name));
-                return;
-            }
 
             /* 如果有等待的需要建造的建筑*/
             if (buildTargets.length) {

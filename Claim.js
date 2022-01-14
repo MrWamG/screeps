@@ -40,7 +40,7 @@ module.exports = {
             if(Game.creeps[i].memory.role === 'claim'){
                 roleClaim.run(Game.creeps[i],target_room_name);
             }else if(Game.creeps[i].memory.role === 'claimBuilder'){
-                roleBuilder.run(Game.creeps[i],0,'',Game.rooms[target_room_name].find(FIND_CONSTRUCTION_SITES));
+                roleBuilder.run(Game.creeps[i],0,'','W42S53');
             }
         }
     }
