@@ -13,7 +13,7 @@ module.exports = {
         target_room_name
     ){
         // 如果要占领的房间中的控制器已经是自己的了，则生产builder去该房间里建造
-        if(Game.rooms[target_room_name].controller.my){
+        if(Game.rooms[target_room_name] && Game.rooms[target_room_name].controller.my){
             global.methods.role_spawn({
                 role_name: 'claimBuilder',
                 spawn: Game.rooms[room_name].find(FIND_MY_SPAWNS)[0],
