@@ -10,7 +10,11 @@ let roleBuilder = {
 
         // 如果指定了目标房间则先往目标房间走
         if(target_room_name && target_room_name !== creep.room.name){
-            creep.moveTo(new RoomPosition(25, 25, target_room_name));
+            creep.moveTo(new RoomPosition(25, 25, target_room_name), {
+                visualizePathStyle: {
+                    stroke: '#00ffff'
+                }
+            });
             return;
         }
 
