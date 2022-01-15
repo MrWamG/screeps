@@ -12,7 +12,9 @@ const main = {
 const room_run = {
     W41S54:require('W41S54'),
     W42S54:require('W42S54'),
+    W42S53:require('W42S53'),
 }
+const Claim = require('Claim');
 global.methods = require('methods');
 module.exports.loop = function () {
     // main.structure_list.run();
@@ -67,21 +69,8 @@ module.exports.loop = function () {
                 );
             }
         }
-        
-        // 只有当基础creep的数量大于等于须要生产的基础creep数量时才会生产claimer
-        // 我毕竟须要保障我当前基地的基本运营
-        // if(creepArr.filter(item=>{return item.memory.role !== 'claim'}).length >= base_creep_num){
-        //     global.methods.role_spawn({
-        //         role_name: 'claim',
-        //         spawn_name: 'Spawn1',
-        //         num: 1,
-        //         body_json: {
-        //             'claim': 1,
-        //             'move': 6
-        //         }
-        //     });
-        // }
-        
+
+        // Claim.run('W42S54',3,'W42S53')
         console.log(`<span style="color:#ff0000">${room.name}↑↑↑</span>`)
     } // 每个房间的循环
     
