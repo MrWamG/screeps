@@ -71,7 +71,7 @@ module.exports.loop = function () {
             }
         }
 
-        // Claim.run('W42S54',3,'W42S53')
+        // Claim.run('W42S54',3,'W41S52')
         console.log(`<span style="color:#ff0000">${room.name}↑↑↑</span>`)
     } // 每个房间的循环
     
