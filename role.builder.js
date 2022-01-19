@@ -28,10 +28,18 @@ let roleBuilder = {
             /* 获取当前爬虫房间内的待建设的建筑数组*/
             let buildTargets = creep.room.find(FIND_CONSTRUCTION_SITES);
 
+            /* 需要刷的墙 */
+            let wallTargets = [];
             /* 获取需要维修的建筑 */
             let repairTargets = creep.room.find(FIND_STRUCTURES,{
                 filter: (item) => {
-                    return item.hits < item.hitsMax
+                    if(item.structureType === 'constructedWall' || item.structureType === 'rampart'){
+                        if(item.hits < 10000){
+                            wallTargets.push(item);
+                        }
+                    }else{
+                        return item.hits < item.hitsMax
+                    }
                 }
             })
 
@@ -49,6 +57,15 @@ let roleBuilder = {
                 }
             }else if(repairTargets.length){// 如果没有需要建造的工地则去维护建筑
                 let closerTarget = creep.pos.findClosestByRange(repairTargets);
+                if(creep.repair(closerTarget) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(closerTarget, {
+                        visualizePathStyle: {
+                            stroke: '#d2ff3c'
+                        }
+                    });
+                }
+            }else if(wallTargets.length){ // 如果基础建筑都维护完了则去刷墙
+                let closerTarget = creep.pos.findClosestByRange(wallTargets);
                 if(creep.repair(closerTarget) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(closerTarget, {
                         visualizePathStyle: {
