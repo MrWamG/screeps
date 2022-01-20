@@ -11,7 +11,7 @@ module.exports = {
             },{
                 role_name: 'upgrade',
                 spawn:spawn[0],
-                num: 4,
+                num: 2,
                 body_json: global.methods.setDynamicBodyPart(roomEnergy),// 自适应部件填充
             },
             {
@@ -20,14 +20,14 @@ module.exports = {
                 num: 1,
                 body_json: {'work': 1,'carry': 1,'move': 1}
             },
-            {
-                role_name: 'transfer',
-                spawn:spawn[0],
-                num: 1,
-                body_json: {'work': 1,'carry': 1,'move': 1}
-            },
+            // {
+            //     role_name: 'transfer',
+            //     spawn:spawn[0],
+            //     num: 1,
+            //     body_json: {'work': 1,'carry': 4,'move': 1}
+            // },
         ];
-
+        
         // 须要生产的基础creep数量
         let base_creep_num = role_spawn_arr.reduce((total,item)=>{
             return total + item.num
@@ -45,15 +45,13 @@ module.exports = {
         for (let i = 0; i < roomCreepArr.length; i++) {
             let creep = roomCreepArr[i];
             if (creep.memory.role === 'harvester') {
-                main.roleExtension.run(creep, 0);
+                main.roleExtension.run(creep, 1);
             } else if (creep.memory.role === 'upgrade') {
                 main.roleUpgrader.run(creep);
             } else if (creep.memory.role === 'builder') {
-                main.roleBuilder.run(creep, 0, 'W42S54Rest');
+                main.roleBuilder.run(creep, 1);
             } else if (creep.memory.role === 'transfer') {
-                // main.roleTransfer.run(creep,RESOURCE_ENERGY); // 将storage中的能量运输至terminal
-            } else if (creep.memory.role === 'claim') {
-                main.roleClaim.run(creep,'W42S54')
+                main.roleTransfer.run(creep,RESOURCE_ENERGY); // 将storage中的能量运输至terminal
             }
         }
     }

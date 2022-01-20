@@ -7,11 +7,11 @@ module.exports = {
                 role_name: 'harvester',
                 spawn:spawn[0],
                 num: 1,
-                body_json: {'work': 1,'carry': 1,'move': 1}
+                body_json: global.methods.setDynamicBodyPart(roomEnergy),// 自适应部件填充
             },{
                 role_name: 'upgrade',
                 spawn:spawn[0],
-                num: 4,
+                num: 2,
                 body_json: global.methods.setDynamicBodyPart(roomEnergy),// 自适应部件填充
             },
             {
@@ -44,8 +44,6 @@ module.exports = {
                 main.roleUpgrader.run(creep);
             } else if (creep.memory.role === 'builder') {                    
                 main.roleBuilder.run(creep, 0, 'W42S54Rest');
-            } else if (creep.memory.role === 'claim') {
-                main.roleClaim.run(creep,'W42S54')
             }
         }
     }
