@@ -1,9 +1,8 @@
-[{
-    "id": "cc6a864dc8f138c74b9b27c7",
+{
     "room": {
         "name": "sim",
         "energyAvailable": 300,
-        "energyCapacityAvailable": 300,
+        "energyCapacityAvailable": 2900,
         "survivalInfo": {
             "mode": "survival",
             "status": "active",
@@ -21,105 +20,11 @@
         }
     },
     "pos": {
-        "x": 18,
-        "y": 22,
+        "x": 5,
+        "y": 45,
         "roomName": "sim"
     },
-    "ticksToDecay": 924,
-    "hits": 4900,
-    "hitsMax": 5000,
-    "structureType": "road"
-}, {
-    "id": "8a12508f3b9a530641f7b39b",
-    "room": {
-        "name": "sim",
-        "energyAvailable": 300,
-        "energyCapacityAvailable": 300,
-        "survivalInfo": {
-            "mode": "survival",
-            "status": "active",
-            "user": "604ee2833db96f33c1807f1e",
-            "score": 0,
-            "timeToWave": 200,
-            "wave": 1,
-            "survivalEnabled": true,
-            "invaders": {
-                "bodies": []
-            }
-        },
-        "visual": {
-            "roomName": "sim"
-        }
-    },
-    "pos": {
-        "x": 17,
-        "y": 22,
-        "roomName": "sim"
-    },
-    "ticksToDecay": 925,
-    "hits": 4900,
-    "hitsMax": 5000,
-    "structureType": "road"
-}, {
-    "id": "5987c75a0c172272111df3f2",
-    "room": {
-        "name": "sim",
-        "energyAvailable": 300,
-        "energyCapacityAvailable": 300,
-        "survivalInfo": {
-            "mode": "survival",
-            "status": "active",
-            "user": "604ee2833db96f33c1807f1e",
-            "score": 0,
-            "timeToWave": 200,
-            "wave": 1,
-            "survivalEnabled": true,
-            "invaders": {
-                "bodies": []
-            }
-        },
-        "visual": {
-            "roomName": "sim"
-        }
-    },
-    "pos": {
-        "x": 16,
-        "y": 22,
-        "roomName": "sim"
-    },
-    "ticksToDecay": 925,
-    "hits": 4900,
-    "hitsMax": 5000,
-    "structureType": "road"
-}, {
-    "id": "668a8414277b77d5d63c98df",
-    "room": {
-        "name": "sim",
-        "energyAvailable": 300,
-        "energyCapacityAvailable": 300,
-        "survivalInfo": {
-            "mode": "survival",
-            "status": "active",
-            "user": "604ee2833db96f33c1807f1e",
-            "score": 0,
-            "timeToWave": 200,
-            "wave": 1,
-            "survivalEnabled": true,
-            "invaders": {
-                "bodies": []
-            }
-        },
-        "visual": {
-            "roomName": "sim"
-        }
-    },
-    "pos": {
-        "x": 15,
-        "y": 22,
-        "roomName": "sim"
-    },
-    "ticksToDecay": 925,
-    "hits": 4900,
-    "hitsMax": 5000,
-    "structureType": "road"
-}]
+    "name": "Attack",
+    "color": 10,
+    "secondaryColor": 10
+}
