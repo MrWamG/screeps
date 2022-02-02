@@ -18,11 +18,14 @@ module.exports = {
         console.log(JSON.stringify(Game.rooms));
         // 由一个指定房间生产指定数量的战斗AI。数量视 creep_num 数字
         if(fighters.length <= creep_num){
-            global.methods.role_spawn({
+            global.methods.spawn_creeper({
                 role_name: 'fighter',
+                memory:{
+                    role:'fighter'
+                },
                 spawn: Game.rooms[room_name].find(FIND_MY_SPAWNS)[0],
                 num: 1,
-                body_json: {'tough':10,'move': 5,'heal': 1,'ranged_attack': 1}
+                body_json: {'tough':15,'move': 5,'heal': 4,'ranged_attack': 4}
             });
         }
 
@@ -47,9 +50,9 @@ module.exports = {
 
             // 主要是因为我的远程攻击模块被摧毁了，所以导致返回了-12
             // 相应模块的摧毁都会导致相应功能不可使用
-            console.log('我的敌人',JSON.stringify(enemys[0].creep));
-            console.log('攻击返回',fighter.rangedAttack(enemys[0].creep));
-            if(fighter.rangedAttack(enemys[0].creep) !== OK) {
+            let enemy = enemys[0][enemys[0].type];
+            fighter.heal(fighter);
+            if(fighter.rangedAttack(enemy) !== OK) {
                 fighter.moveTo(Game.flags['Attack']);
             }
         }
