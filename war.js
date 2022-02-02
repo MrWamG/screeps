@@ -10,6 +10,8 @@ module.exports = {
         creep_num = 1,
         creepArr,
     }){
+        let flag = Game.flags['Attack'];
+        console.log('flags',JSON.stringify(flag));
         // 因为我需要进行跨房间战斗，所以我不能只获取指定房间内的战斗AI
         // 找出我在全局中的战斗AI
         let fighters = _.filter(Game.creeps, (creep) => {
@@ -39,8 +41,8 @@ module.exports = {
          * 但无论是自动攻击还是指定攻击都需要先移动到旗帜位置后再展开攻击行为
          */
         
-        if(Game.flags['Attack']){
-            enemys = Game.rooms[Game.flags['Attack'].room.name].lookAt(Game.flags['Attack'].pos);
+        if(flag){
+            enemys = Game.rooms[flag.room.name].lookAt(flag.pos);
         }
 
         // 命令全局中所有的战斗AI
@@ -53,7 +55,8 @@ module.exports = {
             let enemy = enemys[0][enemys[0].type];
             fighter.heal(fighter);
             if(fighter.rangedAttack(enemy) !== OK) {
-                fighter.moveTo(Game.flags['Attack']);
+                // 使用RoomPosition达到跨房间效果
+                fighter.moveTo(new RoomPosition(flag.pos.x,flag.pos.y,flag.room.name))
             }
         }
     }
