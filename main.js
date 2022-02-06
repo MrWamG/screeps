@@ -10,7 +10,7 @@ const main = {
 }
 
 const room_run = {
-    W41S52:require('W41S52'),
+    W27S54:require('W27S54'),
 }
 const Claim = require('Claim');
 global.methods = require('methods');

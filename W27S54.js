@@ -17,7 +17,7 @@ module.exports = {
             {
                 role_name: 'builder',
                 spawn:spawn[0],
-                num: 2,
+                num: 0,
                 body_json: global.methods.setDynamicBodyPart(roomEnergy),// 自适应部件填充
             },
         ];
