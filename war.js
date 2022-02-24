@@ -3,12 +3,16 @@
  * @param {String} room_name 生产战斗单位的房间名称
  * @param {Number} creep_num 需要生产多少个战斗单位
  * @param {Array} creepArr 全局中所有的AI，我需要通过它来找出战斗单位（不在该函数中进行查找避免额外的CPU消耗）
+ * @param {Object} body_json AI部件
+ * @param {String} attack_room_name 要攻击的房间名称
  */
 module.exports = {
     run({
         room_name = '',
         creep_num = 1,
         creepArr,
+        body_json = {'tough':15,'move': 5,'heal': 4,'ranged_attack': 4},
+        attack_room_name = ''
     }){
         let flag = Game.flags['Attack'];
         console.log('flags',JSON.stringify(flag));
@@ -27,7 +31,7 @@ module.exports = {
                 },
                 spawn: Game.rooms[room_name].find(FIND_MY_SPAWNS)[0],
                 num: 1,
-                body_json: {'tough':15,'move': 5,'heal': 4,'ranged_attack': 4}
+                body_json
             });
         }
 
@@ -41,8 +45,8 @@ module.exports = {
          * 但无论是自动攻击还是指定攻击都需要先移动到旗帜位置后再展开攻击行为
          */
         
-        if(flag){
-            enemys = Game.rooms[flag.room.name].lookAt(flag.pos);
+        if(flag && Game.rooms[attack_room_name]){
+            enemys = Game.rooms[attack_room_name].lookAt(flag.pos);
         }
 
         // 命令全局中所有的战斗AI
@@ -52,11 +56,11 @@ module.exports = {
 
             // 主要是因为我的远程攻击模块被摧毁了，所以导致返回了-12
             // 相应模块的摧毁都会导致相应功能不可使用
-            let enemy = enemys[0][enemys[0].type];
+            let enemy = enemys.length && enemys[0][enemys[0].type];
             fighter.heal(fighter);
             if(fighter.rangedAttack(enemy) !== OK) {
                 // 使用RoomPosition达到跨房间效果
-                fighter.moveTo(new RoomPosition(flag.pos.x,flag.pos.y,flag.room.name))
+                fighter.moveTo(new RoomPosition(flag.pos.x,flag.pos.y,attack_room_name))
             }
         }
     }
