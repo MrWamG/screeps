@@ -11,6 +11,7 @@ const main = {
 
 const room_run = {
     W27S54:require('W27S54'),
+    W28S54:require('W28S54'),
 }
 const Claim = require('Claim');
 global.methods = require('methods');
@@ -68,7 +69,12 @@ module.exports.loop = function () {
             }
         }
 
-        // Claim.run('W42S54',3,'W41S52')
+        Claim.run({
+            room_name:'W27S54',
+            base_creep_num:7,
+            target_room_name:'W28S54',
+            creepArr
+        })
         console.log(`<span style="color:#ff0000">${room.name}↑↑↑</span>`)
     } // 每个房间的循环
     

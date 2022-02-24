@@ -11,7 +11,7 @@ module.exports = {
             },{
                 role_name: 'upgrade',
                 spawn:spawn[0],
-                num: 5,
+                num: 2,
                 body_json: global.methods.setDynamicBodyPart(roomEnergy),// 自适应部件填充
             },
             {
