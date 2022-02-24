@@ -5,15 +5,23 @@ const roleBuilder = require('role.builder'); // 建筑
  * @param {String} room_name 产出claimer的房间
  * @param {Number} base_creep_num 产出claimer房间中存在的爬需要大于多少才开始生产claimer
  * @param {String} target_room_name 要占领的房间名
+ * @param {Array} creepArr 全局中所有的AI，我需要通过它来找出战斗单位（不在该函数中进行查找避免额外的CPU消耗）
  */
 module.exports = {
-    run:function(
-        room_name,
-        base_creep_num,
-        target_room_name
-    ){
+    run:function({
+        room_name = '',
+        base_creep_num = 0,
+        target_room_name = '',
+        creepArr
+    }){
         // 如果要占领的房间中的控制器已经是自己的了，则生产builder去该房间里建造
-        if(Game.rooms[target_room_name] && Game.rooms[target_room_name].controller.my){
+        if(
+            Game.rooms[target_room_name] 
+            && Game.rooms[target_room_name].controller.my 
+            && creepArr.filter(item=>{
+                return item.memory.role === 'claimBuilder'
+            }).length < 2
+        ){
             global.methods.role_spawn({
                 role_name: 'claimBuilder',
                 spawn: Game.rooms[room_name].find(FIND_MY_SPAWNS)[0],
