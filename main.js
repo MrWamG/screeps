@@ -12,6 +12,7 @@ const main = {
 const room_run = {
     W27S54:require('W27S54'),
     W28S54:require('W28S54'),
+    W28S53:require('W28S53'),
 }
 const Claim = require('Claim');
 const War = require('war');
@@ -70,20 +71,20 @@ module.exports.loop = function () {
             }
         }
 
-        // Claim.run({
-        //     room_name:'W27S54',
-        //     base_creep_num:5,
-        //     target_room_name:'W28S55',
-        //     creepArr
-        // })
-
-        War.run({
+        Claim.run({
             room_name:'W27S54',
-            creep_num:1,
-            creepArr,
-            body_json:{'move': 5,'ranged_attack': 4},
-            attack_room_name:'W28S53'
+            base_creep_num:4,
+            target_room_name:'W28S53',
+            creepArr
         })
+
+        // War.run({
+        //     room_name:'W27S54',
+        //     creep_num:1,
+        //     creepArr,
+        //     body_json:{'move': 5,'ranged_attack': 4},
+        //     attack_room_name:'W28S53'
+        // })
         console.log(`<span style="color:#ff0000">${room.name}↑↑↑</span>`)
     } // 每个房间的循环
     
