@@ -47,7 +47,7 @@ module.exports = {
     getSpawnEnergy(room) {
         return room.find(FIND_STRUCTURES, {
             filter: item => {
-                return item.structureType === STRUCTURE_SPAWN || item.structureType === STRUCTURE_EXTENSION
+                return item.my && (item.structureType === STRUCTURE_SPAWN || item.structureType === STRUCTURE_EXTENSION)
             }
         }).reduce((total, item) => {
             return total + Number(item.store.energy);
