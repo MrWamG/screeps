@@ -40,6 +40,7 @@ module.exports = {
                     return creep.memory.role !== 'claim'
                 }
             }).length >= base_creep_num
+            && !Game.rooms[target_room_name].controller.my // 并且目标房间还不属于我时
             && claimers.length < 1 // claimer只需要生产一位就足够了
         ){
             global.methods.role_spawn({
