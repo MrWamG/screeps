@@ -14,6 +14,12 @@ module.exports = {
         target_room_name = '',
         creepArr
     }){
+        // 全局中所有的claim
+        let claimers = [];
+        creepArr.map(creep=>{
+            if(creep.memory.role === "claim") claimers.push(creep)
+        })
+        
         // 如果要占领的房间中的控制器已经是自己的了，则生产builder去该房间里建造
         if(
             Game.rooms[target_room_name] 
@@ -28,11 +34,14 @@ module.exports = {
                 num: 1,
                 body_json: {'work': 1,'carry': 1,'move': 1}
             });
-        }else if(Game.rooms[room_name].find(FIND_CREEPS,{// 为了维持我该基地的基本运营，只有当该房间内的基础运转creep大于我给定的base_creep_num时才会生产用以占领房间的爬
-            filter(creep){
-                return creep.memory.role !== 'claim'
-            }
-        }).length >= base_creep_num){
+        }else if(
+            Game.rooms[room_name].find(FIND_CREEPS,{// 为了维持我该基地的基本运营，只有当该房间内的基础运转creep大于我给定的base_creep_num时才会生产用以占领房间的爬
+                filter(creep){
+                    return creep.memory.role !== 'claim'
+                }
+            }).length >= base_creep_num
+            && claimers.length < 1 // claimer只需要生产一位就足够了
+        ){
             global.methods.role_spawn({
                 role_name: 'claim',
                 spawn: Game.rooms[room_name].find(FIND_MY_SPAWNS)[0],
