@@ -11,7 +11,7 @@ module.exports = {
             },{
                 role_name: 'upgrade',
                 spawn:spawn[0],
-                num: 5,
+                num: 2,
                 body_json: global.methods.setDynamicBodyPart(roomEnergy),// 自适应部件填充
             },
             {
@@ -19,6 +19,15 @@ module.exports = {
                 spawn:spawn[0],
                 num: 1,
                 body_json: global.methods.setDynamicBodyPart(roomEnergy),// 自适应部件填充
+            },
+            {
+                role_name: 'transfer',
+                spawn:spawn[0],
+                num: 1,
+                body_json: {
+                    move:2,
+                    carry:2,
+                },// 自适应部件填充
             },
         ];
 
@@ -44,6 +53,8 @@ module.exports = {
                 main.roleUpgrader.run(creep,1);
             } else if (creep.memory.role === 'builder') {                    
                 main.roleBuilder.run(creep, 0);
+            } else if (creep.memory.role === 'transfer') {                    
+                main.roleTransfer.run(creep, "energy");
             }
         }
     }
